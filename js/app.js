@@ -279,10 +279,7 @@ function renderDashboard() {
 
     <div class="ganttContainer">
 
-        <div
-            style="display:flex;
-                   justify-content:space-between;
-                   align-items:center;">
+        <div class="ganttToolbar">
 
             <h3>
 
@@ -302,39 +299,11 @@ function renderDashboard() {
 
         </div>
 
-        <br>
+        <div id="ganttContainer">
 
-        <div class="ganttContainer">
+            <canvas id="ganttCanvas"></canvas>
 
-    <div
-        style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:15px;
-        ">
-
-        <h3>Project Timeline</h3>
-
-        <select id="zoomLevel">
-
-            <option value="day">Day</option>
-
-            <option value="week" selected>Week</option>
-
-            <option value="month">Month</option>
-
-        </select>
-
-    </div>
-
-    <div id="ganttContainer">
-
-        <canvas id="ganttCanvas"></canvas>
-
-    </div>
-
-</div>
+        </div>
 
     </div>
 

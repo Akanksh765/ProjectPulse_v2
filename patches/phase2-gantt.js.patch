@@ -1,0 +1,57 @@
+﻿diff --git "a/C:\\Users\\PS\\AppData\\Local\\Temp\\opencode\\phase2-before\\gantt.js" "b/js\\gantt\\gantt.js"
+index 2c43e36..5fad42e 100644
+--- "a/C:\\Users\\PS\\AppData\\Local\\Temp\\opencode\\phase2-before\\gantt.js"
++++ "b/js\\gantt\\gantt.js"
+@@ -154,10 +154,10 @@ function drawCustomGantt() {
+         barContainer.className = "ganttBarContainer";
+         barContainer.style.cssText = `
+             position: absolute;
+-            left: ${(offset + 1) * dayWidth}px;
++            left: 0;
+             width: ${duration * dayWidth}px;
+             height: 22px;
+-            top: 9px;
++            top: 10px;
+             border-radius: 4px;
+             overflow: hidden;
+         `;
+@@ -245,11 +245,16 @@ function addTodayMarker(container, minDate, dayWidth, totalDays) {
+     const diffDays = Math.floor((today - min) / (1000 * 60 * 60 * 24));
+ 
+     if (diffDays >= 0 && diffDays < totalDays) {
++        const table = container.querySelector(".ganttTable");
++        if (!table) return;
++
++        const taskColWidth = table.rows[0].cells[0].offsetWidth;
++
+         const marker = document.createElement("div");
+         marker.className = "todayLine";
+         marker.style.cssText = `
+             position: absolute;
+-            left: ${(diffDays + 1) * dayWidth}px;
++            left: ${taskColWidth + diffDays * dayWidth}px;
+             top: 0;
+             bottom: 0;
+             width: 2px;
+@@ -261,7 +266,7 @@ function addTodayMarker(container, minDate, dayWidth, totalDays) {
+         const tooltip = document.createElement("div");
+         tooltip.style.cssText = `
+             position: absolute;
+-            top: -28px;
++            top: 4px;
+             left: 50%;
+             transform: translateX(-50%);
+             background: #ef4444;
+@@ -280,10 +285,7 @@ function addTodayMarker(container, minDate, dayWidth, totalDays) {
+         marker.appendChild(tooltip);
+ 
+         // Insert into the table header area
+-        const table = container.querySelector(".ganttTable");
+-        if (table) {
+-            table.style.position = "relative";
+-            table.appendChild(marker);
+-        }
++        table.style.position = "relative";
++        table.appendChild(marker);
+     }
+ }

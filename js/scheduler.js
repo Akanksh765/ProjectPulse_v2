@@ -45,11 +45,48 @@ function runScheduler() {
 
 function sortTasks() {
 
-    Project.tasks.sort((a, b) => {
+    // Kahn's algorithm for topological sort based on dependencies
+    const taskMap = {};
+    const inDegree = {};
+    const adjList = {};
 
-        return a.id - b.id;
-
+    Project.tasks.forEach(task => {
+        taskMap[task.id] = task;
+        inDegree[task.id] = 0;
+        adjList[task.id] = [];
     });
+
+    Project.tasks.forEach(task => {
+        task.dependencies.forEach(depId => {
+            if (taskMap[depId]) {
+                adjList[depId].push(task.id);
+                inDegree[task.id]++;
+            }
+        });
+    });
+
+    const queue = [];
+    Project.tasks.forEach(task => {
+        if (inDegree[task.id] === 0) queue.push(task.id);
+    });
+
+    const sorted = [];
+    while (queue.length > 0) {
+        const id = queue.shift();
+        sorted.push(taskMap[id]);
+        adjList[id].forEach(succId => {
+            inDegree[succId]--;
+            if (inDegree[succId] === 0) queue.push(succId);
+        });
+    }
+
+    if (sorted.length !== Project.tasks.length) {
+        // Circular dependency detected - fallback to ID order
+        console.warn("Circular dependency detected in sort, falling back to ID order");
+        Project.tasks.sort((a, b) => a.id - b.id);
+    } else {
+        Project.tasks = sorted;
+    }
 
 }
 
